@@ -1,63 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
-default-init-method="turnOnLights"
- default-destroy-method="turnOffLights">
-<!-- Bean declarations go here -->
+	default-init-method="turnOnLights"
+	default-destroy-method="turnOffLights">
+	<!-- Bean declarations go here -->
 
-<bean id="duke"
-class="springinaction.springidol.Juggler">
-<constructor-arg value="15" />
-</bean>
+	<bean id="duke" class="springinaction.springidol.Juggler">
+		<constructor-arg value="15" />
+	</bean>
 
-<bean id="sonnet29"
-class="springinaction.springidol.Sonnet29" />
+	<bean id="sonnet29" class="springinaction.springidol.Sonnet29" />
 
-<bean id="poeticDuke"
-class="springinaction.springidol.PoeticJuggler">
-<constructor-arg value="15" />
-<constructor-arg ref="sonnet29" />
-</bean>
+	<bean id="poeticDuke"
+		class="springinaction.springidol.PoeticJuggler">
+		<constructor-arg value="15" />
+		<constructor-arg ref="sonnet29" />
+	</bean>
 
-<bean id="theStage"
-class="springinaction.springidol.Stage"
-factory-method="getInstance" />
+	<bean id="theStage" class="springinaction.springidol.Stage"
+		factory-method="getInstance" />
 
-<bean id="auditorium"
-class="springinaction.springidol.Auditorium"/>
+	<bean id="auditorium" class="springinaction.springidol.Auditorium" />
 
-<bean id="kenny"
-class="springinaction.springidol.Instrumentalist">
-<property name="song" value="Jingle Bells" />
-</bean>
+	<bean id="kenny" class="springinaction.springidol.Instrumentalist">
+		<property name="song" value="Jingle Bells" />
+	</bean>
 
-<bean id="saxophone"
-class="springinaction.springidol.Saxophone" />
+	<bean id="saxophone" class="springinaction.springidol.Saxophone" />
 
-<bean id="kenny2"
-class="springinaction.springidol.Instrumentalist">
-<property name="song" value="Jingle Bells" />
-<property name="instrument" ref="saxophone" />
-</bean>
+	<bean id="kenny2"
+		class="springinaction.springidol.Instrumentalist">
+		<property name="song" value="Jingle Bells" />
+		<property name="instrument" ref="saxophone" />
+	</bean>
 
-<bean id="piano"
-class="springinaction.springidol.Piano" />
+	<bean id="piano" class="springinaction.springidol.Piano" />
 
-<bean id="kenny3"
-class="springinaction.springidol.Instrumentalist">
-<property name="song" value="Inochi no Namae" />
-<property name="instrument" ref="piano" />
-</bean>
+	<bean id="kenny3"
+		class="springinaction.springidol.Instrumentalist">
+		<property name="song" value="Inochi no Namae" />
+		<property name="instrument" ref="piano" />
+	</bean>
 
-<bean id="hammereddulcimer"
-class="springinaction.springidol.HammeredDulcimer" />
+	<bean id="hammereddulcimer"
+		class="springinaction.springidol.HammeredDulcimer" />
 
-<bean id="kennyS"
-class="springinaction.springidol.Instrumentalist">
-<property name="song" value="EZ4ENCE" />
-<property name="instrument" ref="hammereddulcimer" />
-</bean>
+	<bean id="kennyS"
+		class="springinaction.springidol.Instrumentalist">
+		<property name="song" value="EZ4ENCE" />
+		<property name="instrument" ref="hammereddulcimer" />
+	</bean>
+
+	<!-- Inner Bean - similiar to Inner Class -->
+	<!-- Now Kenny can has his own saxophone -->
+
+	<bean id="cleanKenny"
+		class="springinaction.springidol.Instrumentalist">
+		<property name="song" value="Jingle Bells" />
+		<property name="instrument">
+			<bean class="springinaction.springidol.Saxophone" />
+		</property>
+	</bean>
+
+	<!-- Inner beans aren’t limited to setter injection. You may also wire inner 
+		beans into constructor arguments, as shown in this new declaration of the 
+		duke bean -->
+
+	<bean id="cleanDuke"
+		class="springinaction.springidol.PoeticJuggler">
+		<constructor-arg value="15" />
+		<constructor-arg>
+			<bean class="springinaction.springidol.Sonnet29" />
+		</constructor-arg>
+	</bean>
+
+	<!-- Note that the inner beans don’t have an id attribute set. Though it’s 
+		perfectly legal to declare an ID for an inner bean, it’s not necessary because 
+		you’ll never refer to the inner bean by name -->
+
+	<!-- This highlights the main drawback of using inner beans: they can’t 
+		be reused. Inner beans are only useful for injection once and can’t be referred 
+		to by other beans. -->
+
+	<!-- ======================================= -->
+
+	<!-- The p namespace has a schema URI of http://www.springframework.org/ 
+		schema/p. -->
+	<!-- The primary benefit of the p namespace is that it’s more terse -->
+
+	<bean id="kennyP"
+		class="springinaction.springidol.Instrumentalist"
+		p:song="Jingle Bells" p:instrument-ref="saxophone" />
+
+	<!-- ====================================== -->
+	<!-- wirring collection type to a bean -->
+	<!-- Welcome Hank-One man Band to Spring Idol -->
+
+	<bean id="hank" class="springinaction.springidol.OneManBand">
+		<property name="instruments">
+			<list>
+				<ref bean="piano" />
+				<ref bean="saxophone" />
+				<ref bean="hammereddulcimer" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="hankv2" class="springinaction.springidol.OneManBand">
+		<property name="instruments">
+			<map>
+				<entry key="GUITAR" value-ref="guitar" />
+				<entry key="CYMBAL" value-ref="cymbal" />
+				<entry key="HARMONICA" value-ref="harmonica" />
+			</map>
+		</property>
+	</bean>
+
 
 </beans>
