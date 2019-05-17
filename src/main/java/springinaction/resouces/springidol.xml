@@ -2,7 +2,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+default-init-method="turnOnLights"
+ default-destroy-method="turnOffLights">
 <!-- Bean declarations go here -->
 
 <bean id="duke"
@@ -20,7 +22,42 @@ class="springinaction.springidol.PoeticJuggler">
 </bean>
 
 <bean id="theStage"
-class="com.springinaction.springidol.Stage"
+class="springinaction.springidol.Stage"
 factory-method="getInstance" />
+
+<bean id="auditorium"
+class="springinaction.springidol.Auditorium"/>
+
+<bean id="kenny"
+class="springinaction.springidol.Instrumentalist">
+<property name="song" value="Jingle Bells" />
+</bean>
+
+<bean id="saxophone"
+class="springinaction.springidol.Saxophone" />
+
+<bean id="kenny2"
+class="springinaction.springidol.Instrumentalist">
+<property name="song" value="Jingle Bells" />
+<property name="instrument" ref="saxophone" />
+</bean>
+
+<bean id="piano"
+class="springinaction.springidol.Piano" />
+
+<bean id="kenny3"
+class="springinaction.springidol.Instrumentalist">
+<property name="song" value="Inochi no Namae" />
+<property name="instrument" ref="piano" />
+</bean>
+
+<bean id="hammereddulcimer"
+class="springinaction.springidol.HammeredDulcimer" />
+
+<bean id="kennyS"
+class="springinaction.springidol.Instrumentalist">
+<property name="song" value="EZ4ENCE" />
+<property name="instrument" ref="hammereddulcimer" />
+</bean>
 
 </beans>
